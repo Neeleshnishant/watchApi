@@ -5,7 +5,7 @@ import {AiOutlineSearch} from 'react-icons/ai'
 
 import VideoCard from '../VideoItems'
 
-import CartContext from '../../context/CartContext'
+import CartItems from '../../Context/CartItems'
 
 import {
   SearchVideosContainer,
@@ -104,7 +104,7 @@ class SearchVideos extends Component {
   )
 
   renderHomeVideos = () => (
-    <CartContext.Consumer>
+    <CartItems.Consumer>
       {value => {
         const {isDarkTheme} = value
         const {searchInput, searchedVideos} = this.state
@@ -154,7 +154,7 @@ class SearchVideos extends Component {
           </SearchVideosContainer>
         )
       }}
-    </CartContext.Consumer>
+    </CartItems.Consumer>
   )
 
   renderFailureView = () => (

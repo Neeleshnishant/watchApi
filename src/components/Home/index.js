@@ -1,116 +1,84 @@
-import {Link, withRouter} from 'react-router-dom'
+import {Component} from 'react'
 
-import {BsMoon} from 'react-icons/bs'
+import {IoMdClose} from 'react-icons/io'
 
-import {FiSun} from 'react-icons/fi'
+import Header from '../Header'
 
-import Cookies from 'js-cookie'
-
-import Popup from 'reactjs-popup'
-
-import {
-  NavHeader,
-  ProfileImage,
-  ContentContainer,
-  LogoutButton,
-  ThemeButton,
-  WebsiteLogo,
-  ModalContainer,
-  CloseButton,
-  AlignRow,
-  ConfirmButton,
-  ModalDesc,
-  AlignColumn,
-  ContentListItem,
-} from './styledComponents'
+import SearchVideos from '../SearchVideos'
 
 import CartItems from '../../Context/CartItems'
 
-const Header = props => {
-  const onClickLogout = () => {
-    const {history} = props
-    Cookies.remove('jwt_token')
-    history.replace('/login')
+import {
+  HomeContainer,
+  HomeSideContainer,
+  BannerImage,
+  HomeStickyContainer,
+  CloseButton,
+  ModalContainer,
+  GetItNowButton,
+  BannerImageContainer,
+} from './styledComponents'
+
+import SideBar from '../SideBar'
+
+class Home extends Component {
+  state = {display: 'flex'}
+
+  onCloseBanner = () => {
+    this.setState({display: 'none'}, this.renderHomeVideos)
   }
 
-  return (
-    <CartItems.Consumer>
-      {value => {
-        const {onChangeTheme, isDarkTheme} = value
+  renderHomeVideos = () => {
+    const {display} = this.state
 
-        const onClickChangeTheme = () => {
-          onChangeTheme()
-        }
+    return (
+      <>
+        <BannerImageContainer data-testid="banner" display={display}>
+          <ModalContainer>
+            <BannerImage
+              src=" https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
+              alt="nxt watch logo"
+            />
+            <p>Buy Nxt Watch Premium</p>
+            <GetItNowButton>GET IT NOW</GetItNowButton>
+          </ModalContainer>
+          <CloseButton
+            type="button"
+            data-testid="close"
+            onClick={this.onCloseBanner}
+          >
+            <IoMdClose size={20} color="#231f20" />
+          </CloseButton>
+        </BannerImageContainer>
+        <SearchVideos />
+      </>
+    )
+  }
 
-        const bgColor = isDarkTheme ? '#181818' : '#f9f9f9'
+  render() {
+    return (
+      <CartItems.Consumer>
+        {value => {
+          const {isDarkTheme} = value
+          const bgColor = isDarkTheme ? '#181818' : '#f9f9f9'
 
-        const textColor = isDarkTheme ? '#f9f9f9' : '#181818'
-
-        const websiteLogo = isDarkTheme
-          ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-dark-theme-img.png'
-          : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png'
-
-        return (
-          <NavHeader bgColor={bgColor}>
-            <Link to="/">
-              <WebsiteLogo src={websiteLogo} alt="website logo" />
-            </Link>
-            <ContentContainer>
-              <ContentListItem>
-                <ThemeButton
-                  onClick={onClickChangeTheme}
-                  data-testid="theme"
-                  color={textColor}
-                >
-                  {isDarkTheme ? <FiSun /> : <BsMoon />}
-                </ThemeButton>
-              </ContentListItem>
-
-              <ContentListItem>
-                <ProfileImage
-                  src="https://assets.ccbp.in/frontend/react-js/nxt-watch-profile-img.png"
-                  alt="profile"
-                />
-              </ContentListItem>
-
-              <ContentListItem>
-                <Popup
-                  modal
-                  trigger={
-                    <LogoutButton type="button" data-testid="iconButton">
-                      Logout
-                    </LogoutButton>
-                  }
-                  className="popup-content"
-                >
-                  {close => (
-                    <ModalContainer>
-                      <AlignColumn>
-                        <ModalDesc>Are you sure, you want to logout</ModalDesc>
-                        <AlignRow>
-                          <CloseButton
-                            type="button"
-                            data-testid="closeButton"
-                            onClick={() => close()}
-                          >
-                            Cancel
-                          </CloseButton>
-
-                          <ConfirmButton type="button" onClick={onClickLogout}>
-                            Confirm
-                          </ConfirmButton>
-                        </AlignRow>
-                      </AlignColumn>
-                    </ModalContainer>
-                  )}
-                </Popup>
-              </ContentListItem>
-            </ContentContainer>
-          </NavHeader>
-        )
-      }}
-    </CartItems.Consumer>
-  )
+          return (
+            <div data-testid="home">
+              <Header />
+              <HomeContainer bgColor={bgColor}>
+                <HomeStickyContainer>
+                  <SideBar onChangeActiveTab={this.onChangeActiveTab} />
+                </HomeStickyContainer>
+                <HomeSideContainer bgColor={bgColor}>
+                  {this.renderHomeVideos()}
+                </HomeSideContainer>
+              </HomeContainer>
+            </div>
+          )
+        }}
+      </CartItems.Consumer>
+    )
+  }
 }
 
-export default withRouter(Header)
+export default Home

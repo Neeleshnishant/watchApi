@@ -1,4 +1,4 @@
-import CartContext from '../../Context/CartContext'
+import CartItems from '../../Context/CartItems'
 
 import {
   VideoCardContainer,
@@ -16,7 +16,7 @@ const VideoCard = props => {
   const {name, profileImageUrl} = channel
 
   return (
-    <CartContext.Consumer>
+    <CartItems.Consumer>
       {value => {
         const {isDarkTheme} = value
         const bgColor = isDarkTheme ? '#181818' : '#f9f9f9'
@@ -41,7 +41,7 @@ const VideoCard = props => {
           </NavLink>
         )
       }}
-    </CartContext.Consumer>
+    </CartItems.Consumer>
   )
 }
 

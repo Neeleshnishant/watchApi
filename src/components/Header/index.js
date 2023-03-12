@@ -3,9 +3,7 @@ import {Link, withRouter} from 'react-router-dom'
 import {BsMoon} from 'react-icons/bs'
 
 import {FiSun} from 'react-icons/fi'
-
 import Cookies from 'js-cookie'
-
 import Popup from 'reactjs-popup'
 
 import {
@@ -23,6 +21,7 @@ import {
   AlignColumn,
   ContentListItem,
 } from './StyledComponents'
+
 import CartItems from '../../Context/CartItems'
 
 const Header = props => {
@@ -31,16 +30,13 @@ const Header = props => {
     Cookies.remove('jwt_token')
     history.replace('/login')
   }
-
   return (
     <CartItems.Consumer>
       {value => {
         const {onChangeTheme, isDarkTheme} = value
-
         const onClickChangeTheme = () => {
           onChangeTheme()
         }
-
         const bgColor = isDarkTheme ? '#181818' : '#f9f9f9'
 
         const textColor = isDarkTheme ? '#f9f9f9' : '#181818'
