@@ -7,9 +7,7 @@ import {AiFillFire} from 'react-icons/ai'
 import VideoCardTwo from '../VideoCardTwo'
 
 import Header from '../Header'
-
 import SideBar from '../SideBar'
-
 import CartItems from '../../Context/CartItems'
 
 import {
@@ -52,6 +50,7 @@ class TrendingRoute extends Component {
       apiStatus: apiStatusConstants.inProgress,
     })
     const jwtToken = Cookies.get('jwt_token')
+
     const apiUrl = `https://apis.ccbp.in/videos/trending`
     const options = {
       headers: {
@@ -60,6 +59,7 @@ class TrendingRoute extends Component {
       method: 'GET',
     }
     const response = await fetch(apiUrl, options)
+
     if (response.ok) {
       const fetchedData = await response.json()
       const updatedData = fetchedData.videos.map(each => ({
@@ -87,12 +87,11 @@ class TrendingRoute extends Component {
 
   renderTrendingVideos = () => {
     const {searchedVideos} = this.state
-
+    console.log(searchedVideos)
     return (
       <CartItems.Consumer>
         {value => {
           const {isDarkTheme} = value
-
           const bgColor = isDarkTheme ? '#0f0f0f' : '#f9f9f9'
 
           const textColor = isDarkTheme ? '#f9f9f9' : '#181818'
